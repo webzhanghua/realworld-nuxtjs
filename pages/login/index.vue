@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import request from "@/utils/request";
+import { login, register } from "@/api/user";
 export default {
   name: "Login",
   data() {
@@ -66,14 +66,8 @@ export default {
   },
   methods: {
     async onSubmit() {
-      const { data } = await request({
-        method: "POST",
-        url: "/api/users/login",
-        data: {
-          user: this.user
-        }
-      });
-      console.log("data");
+      const data = await login({ user: this.user });
+      console.log("data", data);
       this.$router.push("/");
     }
   }
