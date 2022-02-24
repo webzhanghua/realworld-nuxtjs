@@ -22,6 +22,7 @@
               <input
                 class="form-control form-control-lg"
                 type="text"
+                v-model="user.username"
                 placeholder="Your Name"
               />
             </fieldset>
@@ -41,6 +42,7 @@
                 v-model="user.password"
                 placeholder="Password"
                 required
+                minlength="6"
               />
             </fieldset>
             <button class="btn btn-lg btn-primary pull-xs-right">
@@ -60,6 +62,7 @@ export default {
   data() {
     return {
       user: {
+        username: "",
         email: "",
         password: ""
       },
@@ -74,7 +77,9 @@ export default {
   methods: {
     async onSubmit() {
       try {
-        const data = await login({ user: this.user });
+        const data = this.isLogin
+          ? await login({ user: this.user })
+          : await register({ user: this.user });
         this.$router.push("/");
       } catch (e) {
         this.errors = e.response.data.errors;

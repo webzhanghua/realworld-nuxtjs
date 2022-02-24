@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const request = axios.create({
-  baseURL: 'https://conduit.productionready.io/'
-  // baseURL: 'https://api.realworld.io/'
+  // baseURL: 'https://conduit.productionready.io/'
+  baseURL: 'https://api.realworld.io/'
 })
 
 // 请求拦截器

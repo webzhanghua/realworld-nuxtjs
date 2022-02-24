@@ -28,6 +28,7 @@
           <li class="nav-item">
             <nuxt-link class="nav-link" to="/profile/2"
               ><img
+                class="user-pic"
                 src="https://api.realworld.io/images/smiley-cyrus.jpeg"
                 alt=""
               />zzz</nuxt-link

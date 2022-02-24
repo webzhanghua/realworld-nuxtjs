@@ -13,7 +13,7 @@ export const login = data => {
 // 注册
 export const register = data => {
   return request({
-    method: 'PSOT',
+    method: 'POST',
     url: 'api/users',
     data: data
   })
