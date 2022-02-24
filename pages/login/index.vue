@@ -10,7 +10,11 @@
           </p>
 
           <ul class="error-messages">
-            <li>That email is already taken</li>
+            <template v-for="(message, field) in errors">
+              <li v-for="(item, index) in message" :key="index">
+                {{ field }}-{{ item }}
+              </li>
+            </template>
           </ul>
 
           <form @submit.prevent="onSubmit">
@@ -58,7 +62,8 @@ export default {
       user: {
         email: "",
         password: ""
-      }
+      },
+      errors: {}
     };
   },
   computed: {
@@ -68,9 +73,12 @@ export default {
   },
   methods: {
     async onSubmit() {
-      const data = await login({ user: this.user });
-      console.log("data", data);
-      this.$router.push("/");
+      try {
+        const data = await login({ user: this.user });
+        this.$router.push("/");
+      } catch (e) {
+        this.errors = e.response.data.errors;
+      }
     }
   }
 };
