@@ -1,0 +1,12 @@
+#### 登录说明
+
+
+在根目录创建store文件夹（服务端使用vuex固定格式）
+创建store/index.js，
+通过this.$store.commit方法，将登录状态更新到store中
+
+##### 登录具体过程
+1、客户端-存储登录状态，并更新store中登录状态的数据
+2、客户端-将登录信息写入cookie
+3、服务端-通过cookie获得登录信息，并更新store中登录状态的数据
+nuxtServerInit是特殊的action方法，在服务端渲染期间自动调用
