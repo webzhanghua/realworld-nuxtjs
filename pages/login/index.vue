@@ -77,10 +77,12 @@ export default {
   methods: {
     async onSubmit() {
       try {
-        const data = this.isLogin
+        const { data } = this.isLogin
           ? await login({ user: this.user })
           : await register({ user: this.user });
         this.$router.push("/");
+        console.log("data", data);
+        this.$store.commit("setUser", data.user);
       } catch (e) {
         this.errors = e.response.data.errors;
       }
