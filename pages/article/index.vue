@@ -129,7 +129,8 @@
 
 <script>
 export default {
-  name: "ArticleIndex"
+  name: "ArticleIndex",
+  middleware: "authenticated"
 };
 </script>
 

@@ -10,3 +10,32 @@
 2、客户端-将登录信息写入cookie
 3、服务端-通过cookie获得登录信息，并更新store中登录状态的数据
 nuxtServerInit是特殊的action方法，在服务端渲染期间自动调用
+
+
+
+#### 处理页面访问权限
+通过nuxt.js的路由中间件控制页面的访问权限；
+
+1、创建中间件
+在根目录创建middleware文件夹（固定格式）；
+在middleware文件夹下，创建js文件，js文件名即是中间件的名称（authen.js）；
+～～～
+export default function ({ store, redirect }) {
+  if (!store.state.user) {
+    return redirect('/login')
+  }
+}
+～～～
+
+2、应用中间件
+找到要控制的页面组件，在根对象上创建middleware属性，属性值为中间件名称(应用单个中间件为字符类型，多个为数组类型);
+~~~
+export default {
+  middleware: "authenticated",
+  name: "EditorIndex"
+};
+export default {
+  middleware: ["authenticated", "root"],
+  name: "EditorIndex"
+};
+~~~
