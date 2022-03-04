@@ -39,3 +39,20 @@ export default {
   name: "EditorIndex"
 };
 ~~~
+
+3、watchQuery,监听路由信息中query对象中的page属性，当发生变化时，重新加载asyncData
+～～～
+export default {
+  async asyncData({ query }) {
+    console.log('query: ', query.page);
+    return {
+    };
+  },
+  // 方式一
+  watchQuery: ["page"],
+  // 方式二
+  watchQuery(newQuery, oldQuery) {
+    return newQuery.foo && oldQuery.bar
+  }
+}
+～～～

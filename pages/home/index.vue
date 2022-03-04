@@ -70,6 +70,28 @@
               <span>Read more...</span>
             </nuxt-link>
           </div>
+          <nav>
+            <ul class="pagination">
+              <li
+                class="page-item"
+                :class="{ active: page === item }"
+                v-for="item in totalPage"
+                :key="item"
+              >
+                <!-- a链接，后端服务器响应 -->
+                <!-- <a class="page-link" :href="'/?page=' + item">{{ item }}</a> -->
+                <!--  -->
+                <nuxt-link
+                  class="page-link"
+                  :to="{
+                    name: 'home',
+                    query: { page: item }
+                  }"
+                  >{{ item }}</nuxt-link
+                >
+              </li>
+            </ul>
+          </nav>
         </div>
 
         <div class="col-md-3">
@@ -98,17 +120,27 @@ import { getArticles } from "@/api/article";
 
 export default {
   name: "home",
-  async asyncData() {
-    const limit = 2;
-    const page = 1;
+  async asyncData({ query }) {
+    const limit = 1;
+    const page = Number.parseInt(query.page || 1);
     const { data } = await getArticles({
       limit,
       offset: (page - 1) * limit
     });
+    console.log(" data.articlesCount: ", data.articlesCount);
     return {
       articles: Array.isArray(data.articles) ? data.articles : [data.articles],
-      articlesCount: data.articlesCount
+      articlesCount: data.articlesCount,
+      limit,
+      page
     };
+  },
+  // 监听路由信息中query对象中的page属性，当发生变化时，重新加载asyncData
+  watchQuery: ["page"],
+  computed: {
+    totalPage() {
+      return Math.ceil(this.articlesCount / this.limit);
+    }
   }
 };
 </script>
