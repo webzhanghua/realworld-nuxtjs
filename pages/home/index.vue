@@ -99,7 +99,12 @@ import { getArticles } from "@/api/article";
 export default {
   name: "home",
   async asyncData() {
-    const { data } = await getArticles({});
+    const limit = 2;
+    const page = 1;
+    const { data } = await getArticles({
+      limit,
+      offset: (page - 1) * limit
+    });
     return {
       articles: Array.isArray(data.articles) ? data.articles : [data.articles],
       articlesCount: data.articlesCount
