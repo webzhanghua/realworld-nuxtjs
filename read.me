@@ -70,3 +70,41 @@ export default {
         }"
 >Global Feed</nuxt-link>
 ～～～
+
+5、对异步请求进行拦截，添加token信息
+5.1 token信息存放在store.state.user.token中，前后端都可以得到，封装在utils/request.js中的request方法无法拿到这个数据；
+5.2 nuxt提供插件的方式，在插件中提供content上下文对象中可以获取到store.state.user.token；
+5.3 在nuxt插件中，对异步请求进行拦截，添加token
+
+
+创建插件，plugins/request.js
+～～～
+import axios from "axios";
+export const request = axios.create({
+  baseURL: 'https://api.realworld.io/'
+})
+export default (content) => {
+  // content 插件中的上下文对象
+  const store = content.store
+  // 请求拦截器
+  request.interceptors.request.use(config => {
+    const { user } = store.state
+    if (user && user.token) {
+      config.headers.Authorization = `Token ${user.token}`
+    }
+    return config
+  },
+    err => {
+      return Promise.reject(err)
+    })
+
+  // 响应拦截器
+}
+～～～
+
+在nuxt.config.js中配置使用插件
+～～～
+module.exports = {
+  plugins: ['~/plugins/request.js']
+}
+～～～

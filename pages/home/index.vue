@@ -175,14 +175,11 @@ export default {
     const loadArticles =
       store.state.user && tab === "your_feed" ? getFeedArticles : getArticles;
     const [articlesRes, tagsRes] = await Promise.all([
-      loadArticles(
-        {
-          limit,
-          offset: (page - 1) * limit,
-          tag: query.tag
-        },
-        token
-      ),
+      loadArticles({
+        limit,
+        offset: (page - 1) * limit,
+        tag: query.tag
+      }),
       getTags()
     ]);
     const { articles, articlesCount } = articlesRes.data;

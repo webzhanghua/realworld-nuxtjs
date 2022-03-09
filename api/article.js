@@ -1,8 +1,8 @@
-import request from "@/utils/request";
+import { request } from "@/plugins/request";
 
 
 // 获取文章信息
-export const getArticles = (params, token) => {
+export const getArticles = (params) => {
   return request({
     method: 'GET',
     url: "api/articles",
@@ -10,14 +10,14 @@ export const getArticles = (params, token) => {
   })
 }
 // 获取当前人的文章信息
-export const getFeedArticles = (params, token) => {
+export const getFeedArticles = (params) => {
   return request({
     method: 'GET',
     url: "api/articles/feed",
     // Authorization: Token jwt.token.here
-    headers: {
-      Authorization: `Token ${token}`
-    },
+    // headers: {
+    //   Authorization: `Token ${token}`
+    // },
     params
   })
 }
