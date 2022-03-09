@@ -97,7 +97,7 @@
               :to="{
                 name: 'article',
                 params: {
-                  slug: item.aslug
+                  slug: item.slug
                 }
               }"
               class="preview-link"
@@ -162,24 +162,31 @@
 </template>
 
 <script>
-import { getArticles } from "@/api/article";
+import { getArticles, getFeedArticles } from "@/api/article";
 import { getTags } from "@/api/tag";
 import { mapState } from "vuex";
 export default {
   name: "home",
-  async asyncData({ query }) {
+  async asyncData({ query, store }) {
     const limit = 1;
     const page = Number.parseInt(query.page || 1);
-    const { tag } = query;
+    const { tag, tab = "global_feed" } = query;
+    const token = store.state.user && store.state.user.token;
+    const loadArticles =
+      store.state.user && tab === "your_feed" ? getFeedArticles : getArticles;
     const [articlesRes, tagsRes] = await Promise.all([
-      getArticles({
-        limit,
-        offset: (page - 1) * limit,
-        tag: query.tag
-      }),
+      loadArticles(
+        {
+          limit,
+          offset: (page - 1) * limit,
+          tag: query.tag
+        },
+        token
+      ),
       getTags()
     ]);
     const { articles, articlesCount } = articlesRes.data;
+    console.log("articles: ", articles);
     const { tags } = tagsRes.data;
     return {
       articles: Array.isArray(articles) ? articles : [articles],
@@ -188,7 +195,7 @@ export default {
       page,
       tags,
       tag,
-      tab: query.tab || "global_feed"
+      tab
     };
   },
   // 监听路由信息中query对象中的page属性，当发生变化时，重新加载asyncData

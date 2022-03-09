@@ -56,3 +56,17 @@ export default {
   }
 }
 ～～～
+
+4、nuxt-link地址的完全匹配
+～～～
+<nuxt-link 
+    class="nav-link"
+    exact
+    :to="{
+        name: 'home',
+        query: {
+              tab: 'global_feed'
+              }
+        }"
+>Global Feed</nuxt-link>
+～～～
