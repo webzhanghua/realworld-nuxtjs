@@ -76,7 +76,6 @@ export default {
 5.2 nuxt提供插件的方式，在插件中提供content上下文对象中可以获取到store.state.user.token；
 5.3 在nuxt插件中，对异步请求进行拦截，添加token
 
-
 创建插件，plugins/request.js
 ～～～
 import axios from "axios";
@@ -107,4 +106,15 @@ export default (content) => {
 module.exports = {
   plugins: ['~/plugins/request.js']
 }
+～～～
+
+6、使用dayjs创建时间过滤器，对时间数据进行格式化
+创建plugins/day.js插件文件，创建创建时间过滤器
+～～～
+import Vue from 'vue'
+import dayjs from 'dayjs'
+
+Vue.filter('date', (val, format = 'YYYY-MM-DD') => {
+  return dayjs(val).format(format)
+})
 ～～～
