@@ -12,11 +12,48 @@
         <div class="col-md-9">
           <div class="feed-toggle">
             <ul class="nav nav-pills outline-active">
-              <li class="nav-item">
-                <a class="nav-link disabled" href="">Your Feed</a>
+              <li v-if="user" class="nav-item">
+                <nuxt-link
+                  class="nav-link"
+                  exact
+                  :class="{ active: tab === 'your_feed' }"
+                  :to="{
+                    name: 'home',
+                    query: {
+                      tab: 'your_feed'
+                    }
+                  }"
+                  >Your Feed</nuxt-link
+                >
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="">Global Feed</a>
+                <nuxt-link
+                  class="nav-link"
+                  exact
+                  :class="{ active: tab === 'global_feed' }"
+                  :to="{
+                    name: 'home',
+                    query: {
+                      tab: 'global_feed'
+                    }
+                  }"
+                  >Global Feed</nuxt-link
+                >
+              </li>
+              <li v-if="tag" class="nav-item">
+                <nuxt-link
+                  class="nav-link"
+                  exact
+                  :class="{ active: tab === 'tag' }"
+                  :to="{
+                    name: 'home',
+                    query: {
+                      tab: 'tag',
+                      tag
+                    }
+                  }"
+                  >#{{ tag }}</nuxt-link
+                >
               </li>
             </ul>
           </div>
@@ -107,7 +144,8 @@
                   name: 'home',
                   query: {
                     page: $route.query.page,
-                    tag: tag
+                    tag: tag,
+                    tab: 'tag'
                   }
                 }"
                 class="tag-pill tag-default"
@@ -126,19 +164,13 @@
 <script>
 import { getArticles } from "@/api/article";
 import { getTags } from "@/api/tag";
-
+import { mapState } from "vuex";
 export default {
   name: "home",
   async asyncData({ query }) {
     const limit = 1;
     const page = Number.parseInt(query.page || 1);
-    // const { data } = await getArticles({
-    //   limit,
-    //   offset: (page - 1) * limit,
-    //   tag: query.tag
-    // });
-    // const { data: tagData } = await getTags();
-
+    const { tag } = query;
     const [articlesRes, tagsRes] = await Promise.all([
       getArticles({
         limit,
@@ -151,15 +183,18 @@ export default {
     const { tags } = tagsRes.data;
     return {
       articles: Array.isArray(articles) ? articles : [articles],
-      articlesCount: articlesCount,
+      articlesCount,
       limit,
       page,
-      tags
+      tags,
+      tag,
+      tab: query.tab || "global_feed"
     };
   },
   // 监听路由信息中query对象中的page属性，当发生变化时，重新加载asyncData
-  watchQuery: ["page", "tag"],
+  watchQuery: ["page", "tag", "tab"],
   computed: {
+    ...mapState(["user"]),
     totalPage() {
       return Math.ceil(this.articlesCount / this.limit);
     }
