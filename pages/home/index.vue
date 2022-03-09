@@ -85,7 +85,10 @@
                   class="page-link"
                   :to="{
                     name: 'home',
-                    query: { page: item }
+                    query: {
+                      page: item,
+                      tag: $route.query.tag
+                    }
                   }"
                   >{{ item }}</nuxt-link
                 >
@@ -99,14 +102,19 @@
             <p>Popular Tags</p>
 
             <div class="tag-list">
-              <a href="" class="tag-pill tag-default">programming</a>
-              <a href="" class="tag-pill tag-default">javascript</a>
-              <a href="" class="tag-pill tag-default">emberjs</a>
-              <a href="" class="tag-pill tag-default">angularjs</a>
-              <a href="" class="tag-pill tag-default">react</a>
-              <a href="" class="tag-pill tag-default">mean</a>
-              <a href="" class="tag-pill tag-default">node</a>
-              <a href="" class="tag-pill tag-default">rails</a>
+              <nuxt-link
+                :to="{
+                  name: 'home',
+                  query: {
+                    page: $route.query.page,
+                    tag: tag
+                  }
+                }"
+                class="tag-pill tag-default"
+                v-for="(tag, index) in tags"
+                :key="index"
+                >{{ tag }}</nuxt-link
+              >
             </div>
           </div>
         </div>
@@ -117,6 +125,7 @@
 
 <script>
 import { getArticles } from "@/api/article";
+import { getTags } from "@/api/tag";
 
 export default {
   name: "home",
@@ -125,18 +134,22 @@ export default {
     const page = Number.parseInt(query.page || 1);
     const { data } = await getArticles({
       limit,
-      offset: (page - 1) * limit
+      offset: (page - 1) * limit,
+      tag: query.tag
     });
     console.log(" data.articlesCount: ", data.articlesCount);
+    const { data: tagData } = await getTags();
+    console.log("tagData: ", tagData);
     return {
       articles: Array.isArray(data.articles) ? data.articles : [data.articles],
       articlesCount: data.articlesCount,
       limit,
-      page
+      page,
+      tags: tagData.tags
     };
   },
   // 监听路由信息中query对象中的page属性，当发生变化时，重新加载asyncData
-  watchQuery: ["page"],
+  watchQuery: ["page", "tag"],
   computed: {
     totalPage() {
       return Math.ceil(this.articlesCount / this.limit);
