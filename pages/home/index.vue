@@ -132,20 +132,29 @@ export default {
   async asyncData({ query }) {
     const limit = 1;
     const page = Number.parseInt(query.page || 1);
-    const { data } = await getArticles({
-      limit,
-      offset: (page - 1) * limit,
-      tag: query.tag
-    });
-    console.log(" data.articlesCount: ", data.articlesCount);
-    const { data: tagData } = await getTags();
-    console.log("tagData: ", tagData);
+    // const { data } = await getArticles({
+    //   limit,
+    //   offset: (page - 1) * limit,
+    //   tag: query.tag
+    // });
+    // const { data: tagData } = await getTags();
+
+    const [articlesRes, tagsRes] = await Promise.all([
+      getArticles({
+        limit,
+        offset: (page - 1) * limit,
+        tag: query.tag
+      }),
+      getTags()
+    ]);
+    const { articles, articlesCount } = articlesRes.data;
+    const { tags } = tagsRes.data;
     return {
-      articles: Array.isArray(data.articles) ? data.articles : [data.articles],
-      articlesCount: data.articlesCount,
+      articles: Array.isArray(articles) ? articles : [articles],
+      articlesCount: articlesCount,
       limit,
       page,
-      tags: tagData.tags
+      tags
     };
   },
   // 监听路由信息中query对象中的page属性，当发生变化时，重新加载asyncData
