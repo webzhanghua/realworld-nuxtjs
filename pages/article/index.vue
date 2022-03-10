@@ -3,29 +3,7 @@
     <div class="banner">
       <div class="container">
         <h1>{{ article.title }}</h1>
-
-        <div class="article-meta">
-          <a href=""><img :src="article.author.image" /></a>
-          <div class="info">
-            <a href="" class="author">{{ article.author.username }}</a>
-            <span class="date">{{
-              article.createdAt | date("MMM DD YYYY")
-            }}</span>
-          </div>
-          <button class="btn btn-sm btn-outline-secondary">
-            <i class="ion-plus-round"></i>
-            &nbsp; Follow Eric Simons
-            <span class="counter"
-              >({{ article.author.followedBy.length }})</span
-            >
-          </button>
-          &nbsp;&nbsp;
-          <button class="btn btn-sm btn-outline-primary">
-            <i class="ion-heart"></i>
-            &nbsp; Favorite Post
-            <span class="counter">({{ article.favoritesCount }})</span>
-          </button>
-        </div>
+        <article-meta :article="article" />
       </div>
     </div>
 
@@ -37,25 +15,7 @@
       <hr />
 
       <div class="article-actions">
-        <div class="article-meta">
-          <a href="profile.html"
-            ><img src="http://i.imgur.com/Qr71crq.jpg"
-          /></a>
-          <div class="info">
-            <a href="" class="author">Eric Simons</a>
-            <span class="date">January 20th</span>
-          </div>
-
-          <button class="btn btn-sm btn-outline-secondary">
-            <i class="ion-plus-round"></i>
-            &nbsp; Follow Eric Simons
-          </button>
-          &nbsp;
-          <button class="btn btn-sm btn-outline-primary">
-            <i class="ion-heart"></i>
-            &nbsp; Favorite Post <span class="counter">(29)</span>
-          </button>
-        </div>
+        <article-meta :article="article" />
       </div>
 
       <div class="row">
@@ -64,7 +24,7 @@
             <div class="card-block">
               <textarea
                 class="form-control"
-                placeholder="Write a comment..."
+                placeholder="Write a  comment..."
                 rows="3"
               ></textarea>
             </div>
@@ -129,9 +89,13 @@
 <script>
 import { getArticle } from "@/api/article";
 import MarkDown from "markdown-it";
+import ArticleMeta from "./components/article-meta.vue";
 export default {
   name: "ArticleIndex",
   middleware: "authenticated",
+  components: {
+    ArticleMeta
+  },
   async asyncData({ params }) {
     console.log("params: ", params);
     const { data } = await getArticle(params.slug);
