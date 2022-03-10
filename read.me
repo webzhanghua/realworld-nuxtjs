@@ -29,6 +29,7 @@ export default function ({ store, redirect }) {
 
 2、应用中间件
 找到要控制的页面组件，在根对象上创建middleware属性，属性值为中间件名称(应用单个中间件为字符类型，多个为数组类型);
+中间件定义在middleware/中间件.js
 ~~~
 export default {
   middleware: "authenticated",
