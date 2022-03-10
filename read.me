@@ -140,3 +140,17 @@ export default {
   }
 };
 ～～～
+
+8、打包
+
+打包：nuxt build => nuxt start 启动生产服务器
+打包：nuxt generate => nuxt start 静态站点部署
+
+～～～
+"scripts": {
+  "dev": "nuxt",  //  启动开发服务器。
+  "build": "nuxt build", // 使用 webpack 构建和优化您的应用程序以用于生产。
+  "start": "nuxt start", // 启动生产服务器（运行后nuxt build）。将它用于 Node.js 托管，例如 Heroku、Digital Ocean 等。
+  "generate": "nuxt generate" // 构建应用程序（如果需要），将每个路由生成为 HTML 文件并静态导出到dist/目录（用于静态托管）。
+}
+～～～
