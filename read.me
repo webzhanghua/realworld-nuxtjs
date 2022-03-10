@@ -119,3 +119,24 @@ Vue.filter('date', (val, format = 'YYYY-MM-DD') => {
   return dayjs(val).format(format)
 })
 ～～～
+
+7、设置页面的seo信息，title、meta
+～～～
+export default {
+  name: "ArticleIndex",
+  // seo优化，设置页面的title、meat信息
+  head() {
+    return {
+      title: 'xxx网站',
+      meta: [
+        {
+          // 唯一标识 对父组件的进行覆盖
+          hid: "description",
+          name: "description",
+          content: this.article.description
+        }
+      ]
+    };
+  }
+};
+～～～

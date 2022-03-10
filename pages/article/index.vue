@@ -104,6 +104,19 @@ export default {
     const md = new MarkDown();
     article.body = md.render(article.body);
     return { article };
+  },
+  // seo优化，设置页面的title、meat信息
+  head() {
+    return {
+      title: `${this.article.title}-readworld`,
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: this.article.description
+        }
+      ]
+    };
   }
 };
 </script>
