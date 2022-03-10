@@ -190,3 +190,31 @@ pm2常用命令
 在服务端通过安装命令安装pm2
 通过pm2 start npm -- start 启动服务
 通过pm2 stop npm 停止服务
+
+11、使用GitHub Actions实现持续集成自动化部署
+11.1 环境准备
+  linux服务器
+  把代码提交到GitHub远程仓库
+11.2 配置GitHub Access Token
+  生成：https://github.com/settings/tokens
+  配置到项目的Secrets中：https://github.com/lipengzhou/realworld-nuxtjs/settings/secrets
+
+  生成token
+  1）路径：右上角用户头像 =》 Settings =》左侧选择Developer settings =》 左侧选择Personal access tokens =》点击Generate new token
+  2）新增：填写名称，勾选repo选项（对仓库操作的权限），点击底部Generate token生成
+  3）说明：生成的token只显示一次，忘记就只能重新申请
+
+  配置到项目中
+  1）路径：进入项目的远程仓库 =》Setting =》 左侧选择Secrets =》 点击 New secret
+  2）新增：创建secret，分别创建TOKEN、HOST、PORT、USERNAME、PASSWORD,这些数据将在.github/workflows/main.yml中使用
+
+11.3 配置GitHub Actions执行脚本
+  在项目根目录创建.github/workflows目录，固定写法
+  下载main.yml到workflows目录中 (https://gist.github.com/lipengzhou/b92f80142afa37aea397da47366bd872)
+  修改配置
+  配置pm2配置文件，pm2.config.json
+  提交更新
+  查看自动部署状态
+  访问网站
+  提交更新。。。
+
