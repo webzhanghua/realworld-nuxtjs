@@ -172,3 +172,21 @@ module.exports = {
 npm install
 9.6 启动服务
 npm run start
+
+10、使用pm2启动node服务
+pm2信息
+  地址：https://github/com/Unitech/pm2
+  文档：https://pm2.io/
+  安装：npm install --global pm2
+  启动：pm2 start 脚步服务
+pm2常用命令
+  pm2 list    查看应用列表
+  pm2 start   启动应用
+  pm2 stop    停止应用
+  pm2 reload  重载应用，新起应用后在关闭老应用
+  pm2 restart 重启应用
+  pm2 delete  删除应用
+本项目使用说明
+在服务端通过安装命令安装pm2
+通过pm2 start npm -- start 启动服务
+通过pm2 stop npm 停止服务
