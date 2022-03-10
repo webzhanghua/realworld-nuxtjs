@@ -51,5 +51,9 @@ module.exports = {
   plugins: [
     '~/plugins/request.js',
     '~/plugins/day.js'
-  ]
+  ],
+  server: {
+    host: 'localhost', // localhost：本地访问，外网不能访问；0.0.0.0:支持外网访问
+    port: 3000, // 访问的端口号
+  }
 }
